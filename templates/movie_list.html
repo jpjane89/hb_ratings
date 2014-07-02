@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block body %}
+<h3>{{movie_list[0].movie.title}}</h3>
+<a href="/add_rating/{{movie_list[0].movie.id}}"><button type="btn btn-sm btn-primary btn-block" type="submit">Add Rating</button></a>
+<div>
+<ul>
+{% for movie in movie_list %}
+<li>User {{ movie.user.id }} 
+    {% if movie.user.email %} 
+    Email: {{movie.user.email}}
+    {% endif %}
+    Rating: {{ movie.rating }} 
+    {% if movie.user_id == session['user_id'] %}
+        <a href="/edit_rating/{{movie.id}}" class="btn btn-xs btn-primary">Edit</a>
+        <a href="/delete_rating/{{movie.id}}" class="btn btn-xs btn-danger">Delete</a>
+    {% endif %}
+</li>
+{% endfor %}
+</ul>
+</div>
+{% endblock %}

@@ -8,7 +8,7 @@
             <div class="container">
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav navbar-right">
-                        {% if 'username' in session %}
+                        {% if session.get('user') %}
                         <li><a href="/logout">Log Out</a></li>
                         {% else %}
                         <li><a href="/login">Log In</a></li>

@@ -2,6 +2,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine, ForeignKey
 from sqlalchemy import Column, Integer, String, Date, Float
 from sqlalchemy.orm import sessionmaker, relationship, backref, scoped_session
+from correlation import pearson
 
 engine = create_engine("sqlite:///ratings.db", echo=False)
 db = scoped_session(sessionmaker(bind=engine, autocommit = False, autoflush = False))

@@ -46,5 +46,4 @@ def main(session):
     load_ratings(session)
 
 if __name__ == "__main__":
-    s= model.connect()
-    main(s)
+    main(model.db)
