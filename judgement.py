@@ -6,6 +6,7 @@ app = Flask(__name__)
 app.secret_key = '\xf5!\x07!qj\xa4\x08\xc6\xf8\n\x8a\x95m\xe2\x04g\xbb\x98|U\xa2f\x03'
 app.jinja_env.undefined = jinja2.StrictUndefined
 
+
 @app.route("/")
 def index():
     return redirect("/login")
@@ -22,7 +23,8 @@ def process_login():
     user = model.db.query(model.User).filter_by(email = email).first()
     if user:
         session['user'] = user.email
-        session['user_id'] = user.id
+        #session['user_id'] = user.id
+        session['user_id'] = 233
         flash ("Welcome %s!" % email)
         return redirect("/user_list")
     else:
@@ -70,7 +72,20 @@ def ratings_list(id):
 @app.route("/movie_record/<int:id>")
 def movie_record(id):
     movie_list = model.db.query(model.Rating).filter_by(movie_id=id).all()
-    return render_template("movie_list.html", movie_list=movie_list)
+    movie = model.db.query(model.Movie).filter_by(id = id).one()
+    user = model.db.query(model.User).filter_by(id = session['user_id']).one()
+    movie_rated = None
+    
+    for m in movie_list:
+        if m.user_id == user.id:
+            movie_rated = m
+            break
+
+    if not movie_rated:
+        prediction = user.predict_rating(movie)
+    else:
+        prediction = None
+    return render_template("movie_list.html", movie_list=movie_list, prediction = prediction)
 
 @app.route("/add_rating/<int:id>", methods =['GET'])
 def rating_form(id):

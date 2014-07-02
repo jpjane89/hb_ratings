@@ -2,6 +2,9 @@
 {% block body %}
 <h3>{{movie_list[0].movie.title}}</h3>
 <a href="/add_rating/{{movie_list[0].movie.id}}"><button type="btn btn-sm btn-primary btn-block" type="submit">Add Rating</button></a>
+{% if prediction %}
+We think you'll rate this movie a {{prediction}}
+{% endif %}
 <div>
 <ul>
 {% for movie in movie_list %}
