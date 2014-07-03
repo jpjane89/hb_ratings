@@ -9,7 +9,7 @@ app.jinja_env.undefined = jinja2.StrictUndefined
 
 @app.route("/")
 def index():
-    return redirect("/login")
+    return render_template("index.html")
 
 @app.route("/login", methods=["GET"])
 def show_login():
@@ -58,10 +58,11 @@ def process_register():
 
     return redirect("/user_list")
 
+
 @app.route("/user_list")
 def user_list():
     user_list = model.db.query(model.User).limit(10).all()
-    movies = model.db.query(model.Movie).order_by(model.Movie.title).limit(10).all()
+    movies = model.db.query(model.Movie).order_by(model.Movie.title).limit(20).all()
     return render_template("user_list.html", users=user_list, movies=movies)
 
 @app.route("/ratings_by_user/<int:id>")
@@ -75,7 +76,7 @@ def movie_record(id):
     movie = model.db.query(model.Movie).filter_by(id = id).one()
     user = model.db.query(model.User).filter_by(id = session['user_id']).one()
     movie_rated = None
-    
+
     for m in movie_list:
         if m.user_id == user.id:
             movie_rated = m
@@ -85,7 +86,15 @@ def movie_record(id):
         prediction = user.predict_rating(movie)
     else:
         prediction = None
-    return render_template("movie_list.html", movie_list=movie_list, prediction = prediction)
+
+    rating_sum = 0
+    for m in movie_list:
+        rating_sum += m.rating
+
+    average = rating_sum / len(movie_list)
+
+
+    return render_template("movie_list.html", user_rating = movie_rated, average=average, movie_list=movie_list, prediction = prediction)
 
 @app.route("/add_rating/<int:id>", methods =['GET'])
 def rating_form(id):
