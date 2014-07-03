@@ -1,13 +1,7 @@
 <html>
     <head>
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />
-        <style>
-        img#logo {
-            position: absolute;
-            left: 0;
-            bottom: 0;
-        }
-        </style>
+        <link rel="stylesheet" href="/static/css/style.css" />
     </head>
     <body>
         <div class="navbar navbar-inverse navbar-static-top">
@@ -34,8 +28,18 @@
             {% endfor %}
             {% endif %}
             {% endwith %}
+        <div id="above">
+            {% block above %} {% endblock %}
+        </div>
+        </div>
+            <img src="/static/img/guy.jpg" id="logo" >
+            <div id="bubble">
+            <div id="speech">
             {% block body %}{% endblock %}
-            <img src="http://www.real.com/resources/wp-content/uploads/2012/02/new_video_streaming_options1.jpg" id="logo" >
+            </div>
+            <div id="image_bubble">
+            <img src="/static/img/speech_bubble.jpg" id="bubble">
+            </div>
         </div>
     </body>
 </html>

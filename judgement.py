@@ -1,6 +1,7 @@
 from flask import Flask, render_template, redirect, request, session, flash, url_for
 import jinja2
 import model
+import json
 
 app = Flask(__name__)
 app.secret_key = '\xf5!\x07!qj\xa4\x08\xc6\xf8\n\x8a\x95m\xe2\x04g\xbb\x98|U\xa2f\x03'
@@ -14,7 +15,7 @@ def index():
 @app.route("/login", methods=["GET"])
 def show_login():
     if session.get("user"):
-        return redirect("/user_list")
+        return redirect("/movie_list")
     return render_template("login.html")
 
 @app.route("/login", methods=["POST"])
@@ -26,7 +27,7 @@ def process_login():
         #session['user_id'] = user.id
         session['user_id'] = 233
         flash ("Welcome %s!" % email)
-        return redirect("/user_list")
+        return redirect("/movie_list")
     else:
        flash('Invalid username/password')
 
@@ -56,14 +57,20 @@ def process_register():
     session["user_id"] = user.id
     flash ("Welcome %s!" % email)
 
-    return redirect("/user_list")
+    return redirect("/movie_list")
 
 
-@app.route("/user_list")
-def user_list():
-    user_list = model.db.query(model.User).limit(10).all()
-    movies = model.db.query(model.Movie).order_by(model.Movie.title).limit(20).all()
-    return render_template("user_list.html", users=user_list, movies=movies)
+@app.route("/movie_list")
+def movie_list():
+    return render_template("movie_list.html")
+
+@app.route("/ajax/movie_titles")
+def ajax_movie_titles():
+    movies = model.db.query(model.Movie).order_by(model.Movie.title).all()
+    movie_list =[]
+    for m in movies:
+        movie_list.append(m.title)
+    return json.dumps(movie_list)
 
 @app.route("/ratings_by_user/<int:id>")
 def ratings_list(id):
@@ -94,7 +101,7 @@ def movie_record(id):
     average = rating_sum / len(movie_list)
 
 
-    return render_template("movie_list.html", user_rating = movie_rated, average=average, movie_list=movie_list, prediction = prediction)
+    return render_template("movie_record.html", user_rating = movie_rated, average=average, movie_list=movie_list, prediction = prediction)
 
 @app.route("/add_rating/<int:id>", methods =['GET'])
 def rating_form(id):

@@ -1,14 +1,31 @@
 {% extends 'base.html' %}
 {% block body %}
-<h3>{{movie_list[0].movie.title}}</h3>
-{% if prediction %}
-<p>We think you'll rate this movie a {{"%.1f"% prediction}}</p>
-{% endif %}
-<p>The average rating for this movie is {{"%.1f"% average}}</p>
-<p><a href="/add_rating/{{movie_list[0].movie.id}}"><button type="btn btn-sm btn-primary btn-block" type="submit">Add Rating</button></a></p>
-{% if user_rating %}
-Your rating for this movie is {{user_rating.rating}}
-<a href="/edit_rating/{{user_rating.id}}" class="btn btn-xs btn-primary">Edit</a>
-<a href="/delete_rating/{{user_rating.id}}" class="btn btn-xs btn-danger">Delete</a>
-{% endif %}
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script src="//code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
+<label for="autocomplete">Select a movie: </label>
+<input id="autocomplete">
+
+<script type="text/javascript">
+
+function get_titles() {
+    $.get("/ajax/movie_titles", add_to_autocomplete);
+}
+
+function add_to_autocomplete(data) {
+    var movies = JSON.parse(data);
+    $("#autocomplete" ).autocomplete({
+    source: movies
+            });
+}
+
+function main() {
+    get_titles();
+}
+
+$(main);
+</script>
+
 {% endblock %}
+
+

@@ -1,0 +1,25 @@
+ img#logo {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+}
+div#bubble {
+    position: absolute;
+    left: 300px;
+    bottom:40px;
+}
+div#speech {
+    z-index: 2;
+    position: absolute;
+    padding: 80px;
+}
+div#image_bubble {
+    z-index: 1;
+}
+img#bubble {
+    width: 600px;
+}
+div#above {
+    height: 250px;
+    z-index: 3;
+}
