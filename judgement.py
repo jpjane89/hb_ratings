@@ -60,9 +60,15 @@ def process_register():
     return redirect("/movie_list")
 
 
-@app.route("/movie_list")
+@app.route("/movie_list", methods=["GET"])
 def movie_list():
     return render_template("movie_list.html")
+
+@app.route("/movie_list", methods=["POST"])
+def get_movie_record():
+    movie_title = request.form['movie_title']
+    movie = model.db.query(model.Movie).filter_by(title = movie_title).one()
+    return redirect("/movie_record/" + str(movie.id))
 
 @app.route("/ajax/movie_titles")
 def ajax_movie_titles():
