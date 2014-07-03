@@ -106,8 +106,10 @@ def movie_record(id):
 
     average = rating_sum / len(movie_list)
 
+    all_movies = model.db.query(model.Movie).limit(500).all()
+    similar_movie = movie.most_similar(all_movies)
 
-    return render_template("movie_record.html", user_rating = movie_rated, average=average, movie_list=movie_list, prediction = prediction)
+    return render_template("movie_record.html", user_rating = movie_rated, average=average, movie=movie, prediction = prediction, similar_movie=similar_movie[1])
 
 @app.route("/add_rating/<int:id>", methods =['GET'])
 def rating_form(id):

@@ -3,6 +3,7 @@ from sqlalchemy import create_engine, ForeignKey
 from sqlalchemy import Column, Integer, String, Date, Float
 from sqlalchemy.orm import sessionmaker, relationship, backref, scoped_session
 from correlation import pearson
+import random
 
 engine = create_engine("sqlite:///ratings.db", echo=False)
 db = scoped_session(sessionmaker(bind=engine, autocommit = False, autoflush = False))
@@ -70,6 +71,14 @@ class Movie(Base):
             return pearson(paired_ratings)
         else:
             return 0.0
+
+    def most_similar(self,movies):
+        pearsons = []
+        for m in movies:
+            sim = self.similarity(m)
+            pearsons.append((sim,m))
+        pearsons.sort(reverse=True)
+        return pearsons[random.randint(1, 10)]
 
 class Rating(Base):
     __tablename__ = "ratings"
