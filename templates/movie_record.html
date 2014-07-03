@@ -4,9 +4,9 @@
 <p>The average rating for this movie is {{"%.1f"% average}}</p>
 {% if prediction %}
 We think you'll rate this movie a {{"%.1f"% prediction}} 
+<a href="/add_rating/{{movie.id}}"><button type="btn btn-sm btn-primary btn-block" type="submit">Add Rating</button></a>
 {% endif %}
 
-<a href="/add_rating/{{movie.id}}"><button type="btn btn-sm btn-primary btn-block" type="submit">Add Rating</button></a>
 {% if user_rating %}
 Your rating for this movie is {{user_rating.rating}}
 <a href="/edit_rating/{{user_rating.id}}" class="btn btn-xs btn-primary">Edit</a>

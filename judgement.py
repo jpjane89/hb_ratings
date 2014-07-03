@@ -54,7 +54,7 @@ def process_register():
 
     session["user"] = email
     user = model.db.query(model.User).filter_by(email=email).one()
-    session["user_id"] = user.id
+    session["user_id"] = 233
     flash ("Welcome %s!" % email)
 
     return redirect("/movie_list")
@@ -106,7 +106,7 @@ def movie_record(id):
 
     average = rating_sum / len(movie_list)
 
-    all_movies = model.db.query(model.Movie).limit(500).all()
+    all_movies = model.db.query(model.Movie).filter(model.Movie.id != movie.id).limit(500).all()
     similar_movie = movie.most_similar(all_movies)
 
     return render_template("movie_record.html", user_rating = movie_rated, average=average, movie=movie, prediction = prediction, similar_movie=similar_movie[1])

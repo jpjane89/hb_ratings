@@ -78,7 +78,8 @@ class Movie(Base):
             sim = self.similarity(m)
             pearsons.append((sim,m))
         pearsons.sort(reverse=True)
-        return pearsons[random.randint(1, 10)]
+        similar = pearsons[random.randint(0, 10)]
+        return similar
 
 class Rating(Base):
     __tablename__ = "ratings"
